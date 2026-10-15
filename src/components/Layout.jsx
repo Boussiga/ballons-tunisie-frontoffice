@@ -7,8 +7,9 @@ import { CONTACT } from '../config'
 const LIENS = [
   { to: '/', label: 'Accueil', end: true, icone: true },
   { to: '/produits', label: 'Nos ballons' },
+  { to: '/offres', label: 'Offres & packs' },
   { to: '/suivi', label: 'Suivre ma commande' },
-  { to: '/#pourquoi', label: 'Pourquoi nous choisir', hash: true },
+  { to: '/#pourquoi', label: 'Pourquoi nous', hash: true },
 ]
 
 function Navigation({ onNavigate, className = '' }) {
@@ -16,7 +17,7 @@ function Navigation({ onNavigate, className = '' }) {
   return (
     <nav className={className}>
       {LIENS.map((l) => {
-        const actif = l.hash ? pathname === '/' && hash === '#pourquoi' : l.end ? pathname === '/' && !hash : pathname.startsWith(l.to) || (l.to === '/produits' && /^\/(offres|packs)/.test(pathname))
+        const actif = l.hash ? pathname === '/' && hash === '#pourquoi' : l.end ? pathname === '/' && !hash : pathname.startsWith(l.to) || (l.to === '/offres' && pathname.startsWith('/packs'))
         return (
           <NavLink
             key={l.to}
@@ -67,11 +68,11 @@ function Header() {
           <img src="/logo.png" alt="Ballons Tunisie" className="h-14 w-auto" />
         </Link>
 
-        <Navigation className="ml-2 hidden items-center gap-7 lg:flex" />
+        <Navigation className="ml-2 hidden items-center gap-5 lg:flex xl:gap-7" />
 
         <div className="ml-auto hidden items-center gap-4 lg:flex">
           {champ}
-          <a href={`tel:${CONTACT.telephone.replace(/\s/g, '')}`} className="rounded-full border border-slate-200 px-5 py-2 text-xs font-semibold tracking-wider text-ink hover:border-brand-dark">
+          <a href={`tel:${CONTACT.telephone.replace(/\s/g, '')}`} className="hidden rounded-full border border-slate-200 px-5 py-2 text-xs font-semibold tracking-wider text-ink hover:border-brand-dark xl:block">
             {CONTACT.telephone}
           </a>
         </div>
