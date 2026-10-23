@@ -1,4 +1,4 @@
-import { Mail, Volleyball } from 'lucide-react'
+import { Mail, Phone, Volleyball } from 'lucide-react'
 import { CONTACT } from '../config'
 
 // "Une question ?" block shown at the bottom of the catalogue and offers pages
@@ -11,9 +11,14 @@ export default function QuestionBloc() {
         <p className="mx-auto mt-3 max-w-xl text-sm text-slate-600">
           Nous vous conseillons avec plaisir sur la taille et le modèle le plus adapté à votre pratique sportive ou à votre club.
         </p>
-        <a href={`mailto:${CONTACT.email}`} className="btn mt-5 !bg-brand-dark">
-          <Mail size={15} /> Contactez notre équipe
-        </a>
+        <div className="mt-5 flex flex-wrap justify-center gap-3">
+          <a href={`tel:${CONTACT.telephone.replace(/\s/g, '')}`} className="btn !bg-brand-dark">
+            <Phone size={15} /> {CONTACT.telephone}
+          </a>
+          <a href={`mailto:${CONTACT.email}`} className="label inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm text-ink shadow-sm hover:text-brand-dark">
+            <Mail size={15} /> Écrire à notre équipe
+          </a>
+        </div>
       </div>
     </section>
   )

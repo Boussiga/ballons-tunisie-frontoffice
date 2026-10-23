@@ -6,7 +6,6 @@ import {
   Headset,
   Mail,
   MousePointerClick,
-  PackageCheck,
   Percent,
   Phone,
   PhoneCall,
@@ -15,24 +14,18 @@ import {
   ShoppingBag,
   Tag,
   Truck,
-  Wallet,
 } from 'lucide-react'
 import { getFacets, getProduits } from '../api/storeApi'
 import { useApi } from '../api/useApi'
 import { CONTACT, LIVRAISON_GRATUITE_DES } from '../config'
 import { useOffres } from '../offres/useOffres'
 import { DEVISE, formatDate } from '../utils/format'
+import BanniereOffre from '../components/BanniereOffre'
+import CarteSquelette from '../components/CarteSquelette'
 import ProduitCard from '../components/ProduitCard'
+import Reassurance from '../components/Reassurance'
 
 const TEL = `tel:${CONTACT.telephone.replace(/\s/g, '')}`
-
-// Short reassurance points, repeated under the hero
-const GARANTIES = [
-  { icone: Truck, titre: 'Expédition 24 à 48 h', texte: 'Préparée depuis notre stock' },
-  { icone: PackageCheck, titre: `Livraison offerte dès ${LIVRAISON_GRATUITE_DES} ${DEVISE}`, texte: 'Sur toute votre commande' },
-  { icone: Wallet, titre: 'Aucun paiement en ligne', texte: 'Confirmation par téléphone' },
-  { icone: Headset, titre: 'Conseil direct', texte: CONTACT.telephone },
-]
 
 const ETAPES = [
   { icone: MousePointerClick, titre: 'Choisissez vos ballons', texte: 'Parcourez le catalogue, filtrez par discipline et par taille, consultez chaque fiche produit.' },
@@ -76,22 +69,6 @@ function EnTete({ surtitre, titre, texte, clair = false }) {
       <p className={`label text-xs ${clair ? 'text-salmon' : 'text-brand-dark'}`}>{surtitre}</p>
       <h2 className={`mt-1 font-display text-3xl font-bold uppercase sm:text-4xl ${clair ? 'text-white' : 'text-ink'}`}>{titre}</h2>
       {texte && <p className={`mt-3 text-sm leading-relaxed sm:text-base ${clair ? 'text-slate-200' : 'text-slate-600'}`}>{texte}</p>}
-    </div>
-  )
-}
-
-// Placeholder cards while the selection loads, so the page does not jump
-function CarteSquelette() {
-  return (
-    <div className="card animate-pulse p-3 sm:p-4" aria-hidden>
-      <div className="aspect-[1/0.95] rounded-xl bg-panel" />
-      <div className="mt-4 h-3 w-1/4 rounded bg-panel" />
-      <div className="mt-2 h-5 w-3/4 rounded bg-panel" />
-      <div className="mt-2 h-3 w-full rounded bg-panel" />
-      <div className="mt-6 flex items-end justify-between">
-        <div className="h-7 w-20 rounded bg-panel" />
-        <div className="h-8 w-24 rounded-md bg-panel" />
-      </div>
     </div>
   )
 }
@@ -163,42 +140,9 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* REASSURANCE STRIP */}
-      <section className="border-b border-slate-200 bg-white">
-        <ul className="mx-auto grid max-w-[1304px] grid-cols-2 gap-x-4 gap-y-5 px-4 py-6 sm:px-11 lg:grid-cols-4">
-          {GARANTIES.map(({ icone: Icone, titre, texte }) => (
-            <li key={titre} className="flex items-center gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand-dark">
-                <Icone size={19} />
-              </span>
-              <span className="min-w-0">
-                <span className="block text-sm font-semibold leading-tight text-ink">{titre}</span>
-                <span className="block text-xs text-slate-500">{texte}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <Reassurance />
 
-      {/* OFFER BANNER */}
-      {offre && (
-        <section className="mx-auto max-w-[1304px] px-4 pt-10 sm:px-11">
-          <Link to="/offres" className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-brand px-6 py-5 text-white shadow-[0_12px_28px_-14px_rgba(227,6,19,0.9)] transition hover:bg-brand-dark">
-            <div className="flex items-center gap-4">
-              <span className="font-display text-4xl font-bold leading-none">−{offre.pourcentageReduction} %</span>
-              <div>
-                <p className="font-semibold">{offre.titre}</p>
-                <p className="text-sm text-white/85">
-                  Remise appliquée automatiquement sur tout le site · {offre.joursRestants <= 1 ? 'dernier jour !' : `encore ${offre.joursRestants} jours`}
-                </p>
-              </div>
-            </div>
-            <span className="label inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs text-brand-dark">
-              J’en profite <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
-            </span>
-          </Link>
-        </section>
-      )}
+      <BanniereOffre className="pt-10" />
 
       {/* SELECTION */}
       <section className="mx-auto max-w-[1304px] px-4 py-16 sm:px-11">
@@ -222,7 +166,7 @@ export default function Accueil() {
             <p className="py-16 text-center text-slate-500">Aucun ballon disponible pour le moment.</p>
           )}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {produits.loading ? [0, 1, 2].map((i) => <CarteSquelette key={i} />) : liste.map((p) => <ProduitCard key={p.id} produit={p} grand />)}
+            {produits.loading ? [0, 1, 2].map((i) => <CarteSquelette key={i} grand />) : liste.map((p) => <ProduitCard key={p.id} produit={p} grand />)}
           </div>
         </div>
 
