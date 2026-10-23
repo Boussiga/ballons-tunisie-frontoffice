@@ -14,6 +14,15 @@ Start the API (`ballons-tunisie-api`) first. In production, build with
 `VITE_API_URL=https://your-api npm run build` (see `.env.example`) and add the store's
 URL to the API's `FRONTEND_URL` (CORS).
 
+## Docker
+
+The image is built in 2 stages: Node builds the site, then only the built files are
+copied into an nginx image. nginx (`nginx.conf`) serves the pages and forwards `/api`
+and `/uploads` to the API, like the Vite dev proxy.
+
+The whole stack (database + API + store) is started from the API repository:
+`docker compose up --build` (see its README). The store is then on http://localhost:8080.
+
 ## Pages
 
 | Route | What it does |
