@@ -18,7 +18,7 @@ const ARGUMENTS = [
   { i: Award, t: 'Garantie forme 18 mois' },
 ]
 
-// Packs & offers share one page: offers apply to every price on the site.
+// Packs & offers share one page. Each offer discounts the products it targets (never packs).
 export default function Offres() {
   const { offres, offre, chargee } = useOffres()
   const [params, setParams] = useSearchParams()
@@ -57,7 +57,7 @@ export default function Offres() {
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-200">
               {offre
-                ? `Faites des économies sur vos ballons d'entraînement et packs clubs. Jusqu'à ${offre.pourcentageReduction}% de remise immédiate appliquée automatiquement au panier.`
+                ? `Faites des économies sur vos ballons d'entraînement et packs clubs. Jusqu'à ${offre.pourcentageReduction}% de remise immédiate sur une sélection de ballons, appliquée automatiquement au panier.`
                 : "Faites des économies sur vos ballons d'entraînement et packs clubs : ballons certifiés match et dotations complètes avec accessoires."}
             </p>
           </div>
@@ -92,7 +92,19 @@ export default function Offres() {
                 <div>
                   <h2 className="font-medium text-ink">{o.titre}</h2>
                   <p className="text-xs text-slate-500">Jusqu’au {formatDate(o.dateFin)} · {o.joursRestants <= 1 ? 'dernier jour !' : `encore ${o.joursRestants} jours`}</p>
-                  {offre?.id === o.id && <p className="label mt-1 text-[10px] text-brand-dark">Appliquée sur tout le site</p>}
+                  {o.produits?.length > 0 && (
+                    <p className="mt-1 text-xs text-slate-600">
+                      Sur :{' '}
+                      {o.produits.map((p, i) => (
+                        <span key={p.id}>
+                          {i > 0 && ', '}
+                          <Link to={`/produits/${p.id}`} className="text-brand-dark hover:underline">
+                            {p.nom}{p.taille ? ` (taille ${p.taille})` : ''}
+                          </Link>
+                        </span>
+                      ))}
+                    </p>
+                  )}
                 </div>
               </article>
             ))}

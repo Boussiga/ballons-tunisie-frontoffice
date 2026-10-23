@@ -1,17 +1,15 @@
 import { CircleCheck, Package, Star } from 'lucide-react'
 import { useCart } from '../cart/useCart'
-import { useOffres } from '../offres/useOffres'
 import { formatPrix } from '../utils/format'
-import { prixRemise } from '../utils/prix'
 import BoutonAjouter from './BoutonAjouter'
 import Visuel from './Visuel'
 
 export default function PackCard({ pack }) {
   const { ajouter } = useCart()
-  const { offre } = useOffres()
   const contenu = pack.produits ?? []
   const valeurSeparee = contenu.reduce((t, { produit, quantite }) => t + produit.prix * quantite, 0)
-  const prixFinal = prixRemise(pack.prixPack, offre)
+  // Offers never apply to packs: the pack price already includes its own discount
+  const prixFinal = pack.prixPack
   const economie = Math.max(0, valeurSeparee - prixFinal)
   const image = contenu.find((c) => c.produit.imageUrl)?.produit.imageUrl
   const nbBallons = contenu.reduce((n, c) => n + c.quantite, 0)

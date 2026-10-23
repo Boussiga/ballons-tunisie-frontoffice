@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../cart/useCart'
 import { useOffres } from '../offres/useOffres'
 import { DISPONIBILITE } from '../utils/format'
+import { offreProduit } from '../utils/prix'
 import BoutonAjouter from './BoutonAjouter'
 import Prix from './Prix'
 import Visuel from './Visuel'
@@ -9,7 +10,7 @@ import Visuel from './Visuel'
 // variant "grand": home page (photo fills the frame). Default: catalogue (photo contained, stock badge, TTC).
 export default function ProduitCard({ produit, grand = false }) {
   const { ajouter } = useCart()
-  const { offre } = useOffres()
+  const offre = offreProduit(produit.id, useOffres().offres)
   const dispo = DISPONIBILITE[produit.disponibilite] ?? DISPONIBILITE.disponible
   const lien = `/produits/${produit.id}`
 
@@ -35,7 +36,7 @@ export default function ProduitCard({ produit, grand = false }) {
         {grand && produit.taille && <p className="mt-1 text-xs text-slate-500">Taille : {produit.taille}</p>}
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-5">
-          <Prix prix={produit.prix} ttc={!grand} className={grand ? 'text-2xl' : 'text-xl'} />
+          <Prix prix={produit.prix} offre={offre} ttc={!grand} className={grand ? 'text-2xl' : 'text-xl'} />
           <BoutonAjouter
             disabled={produit.disponibilite === 'rupture'}
             onAdd={() =>

@@ -25,7 +25,7 @@ export default function OffresProvider({ children }) {
   const value = useMemo(
     () => ({
       offres: state.offres,
-      offre: meilleureOffre(state.offres), // the offer applied to prices
+      offre: meilleureOffre(state.offres), // headline offer for banners; prices use offreProduit()
       chargee: state.key === reload,
       recharger: () => setReload((n) => n + 1),
     }),

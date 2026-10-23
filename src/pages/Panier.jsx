@@ -10,13 +10,13 @@ import Visuel from '../components/Visuel'
 import { formatPrix } from '../utils/format'
 import { memoriserCommande } from '../utils/commandesLocales'
 import { FRAIS_LIVRAISON } from '../config'
-import { QTE_MAX, prixRemise, totalAvecLivraison, totalLignes } from '../utils/prix'
+import { QTE_MAX, offreLigne, prixRemise, totalAvecLivraison, totalLignes } from '../utils/prix'
 
 const fieldClass = 'field mt-1'
 
 export default function Panier() {
   const { lignes, changerQuantite, retirer, vider } = useCart()
-  const { offre, recharger } = useOffres()
+  const { offres, recharger } = useOffres()
   const navigate = useNavigate()
 
   const [nom, setNom] = useState('')
@@ -26,8 +26,9 @@ export default function Panier() {
   const [details, setDetails] = useState([])
   const [envoi, setEnvoi] = useState(false)
 
-  const sousTotal = totalLignes(lignes, null)
-  const totalArticles = totalLignes(lignes, offre)
+  const sousTotal = totalLignes(lignes, [])
+  const totalArticles = totalLignes(lignes, offres)
+  const remises = Number((sousTotal - totalArticles).toFixed(2))
   const total = totalAvecLivraison(totalArticles)
 
   async function handleSubmit(e) {
@@ -47,11 +48,14 @@ export default function Panier() {
         nomClient: nom.trim(),
         telephoneClient: tel,
         adresseLivraison: adresse.trim(),
-        lignes: lignes.map((l) => ({
-          [l.type === 'pack' ? 'packId' : 'produitId']: l.id,
-          quantite: l.quantite,
-          ...(offre && { offreId: offre.id }),
-        })),
+        lignes: lignes.map((l) => {
+          const offre = offreLigne(l, offres)
+          return {
+            [l.type === 'pack' ? 'packId' : 'produitId']: l.id,
+            quantite: l.quantite,
+            ...(offre && { offreId: offre.id }),
+          }
+        }),
       })
       memoriserCommande(commande)
       navigate(`/suivi/${commande.id}`, { state: { nouvelle: true } })
@@ -84,7 +88,9 @@ export default function Panier() {
       <div className="mx-auto max-w-[1304px] px-4 py-8 sm:px-11">
       <div className="grid gap-8 lg:grid-cols-5">
         <ul className="space-y-4 lg:col-span-3">
-          {lignes.map((l) => (
+          {lignes.map((l) => {
+            const offre = offreLigne(l, offres)
+            return (
             <li key={l.cle} className="card flex gap-4 p-4">
               <Visuel url={l.imageUrl} alt={l.nom} fit="contain" className="h-20 w-20 shrink-0 rounded-xl" />
               <div className="flex flex-1 flex-col">
@@ -92,6 +98,7 @@ export default function Panier() {
                   <div>
                     <p className="font-display text-lg font-semibold uppercase leading-tight text-ink">{l.nom}</p>
                     <p className="text-xs text-slate-500">{l.type === 'pack' ? 'Pack' : l.taille ? `Taille ${l.taille}` : 'Ballon'}</p>
+                    {offre && <p className="text-xs text-green-700">{offre.titre} (−{offre.pourcentageReduction} %)</p>}
                   </div>
                   <button onClick={() => retirer(l.cle)} aria-label={`Retirer ${l.nom}`} className="text-slate-400 hover:text-brand-dark">
                     <Trash2 size={18} />
@@ -125,7 +132,8 @@ export default function Panier() {
                 </div>
               </div>
             </li>
-          ))}
+            )
+          })}
         </ul>
 
         <form onSubmit={handleSubmit} className="card space-y-4 p-6 lg:col-span-2 lg:self-start">
@@ -134,12 +142,10 @@ export default function Panier() {
               <span>Sous-total</span>
               <span>{formatPrix(sousTotal)}</span>
             </p>
-            {offre && (
+            {remises > 0 && (
               <p className="flex justify-between text-green-700">
-                <span>
-                  {offre.titre} (−{offre.pourcentageReduction} %)
-                </span>
-                <span>−{formatPrix(sousTotal - totalArticles)}</span>
+                <span>Remises offres</span>
+                <span>−{formatPrix(remises)}</span>
               </p>
             )}
             <p className="flex justify-between">

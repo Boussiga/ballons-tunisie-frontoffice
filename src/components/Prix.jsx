@@ -1,10 +1,8 @@
-import { useOffres } from '../offres/useOffres'
 import { formatPrix } from '../utils/format'
 import { prixRemise } from '../utils/prix'
 
-// Shows the price, with the active offer applied and the original price struck through.
-export default function Prix({ prix, className = 'text-2xl', ttc = false, decimales = false }) {
-  const { offre } = useOffres()
+// Shows the price, with the given offer (see offreProduit) applied and the original price struck through.
+export default function Prix({ prix, offre = null, className = 'text-2xl', ttc = false, decimales = false }) {
   const base = `font-display font-bold leading-none whitespace-nowrap ${className}`
 
   return (

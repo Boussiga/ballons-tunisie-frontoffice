@@ -15,7 +15,7 @@ export default function BanniereOffre({ className = '' }) {
           <div>
             <p className="font-semibold">{offre.titre}</p>
             <p className="text-sm text-white/85">
-              Remise appliquée automatiquement sur tout le site ·{offre.joursRestants <= 1 ? 'dernier jour !' : `encore ${offre.joursRestants} jours`}
+              Remise appliquée automatiquement sur les ballons concernés ·{offre.joursRestants <= 1 ? 'dernier jour !' : `encore ${offre.joursRestants} jours`}
             </p>
           </div>
         </div>

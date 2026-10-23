@@ -11,7 +11,7 @@ import Visuel from '../components/Visuel'
 import { FRAIS_LIVRAISON } from '../config'
 import { useOffres } from '../offres/useOffres'
 import { DEVISE, DISPONIBILITE, formatPrix } from '../utils/format'
-import { QTE_MAX, prixRemise } from '../utils/prix'
+import { QTE_MAX, offreProduit, prixRemise } from '../utils/prix'
 
 // Same ball in other sizes = other products with the same name
 function Tailles({ produit }) {
@@ -56,7 +56,7 @@ export default function ProduitDetail() {
 
 function Fiche({ produit }) {
   const { ajouter } = useCart()
-  const { offre } = useOffres()
+  const offre = offreProduit(produit.id, useOffres().offres)
   const [quantite, setQuantite] = useState(1)
   const dispo = DISPONIBILITE[produit.disponibilite] ?? DISPONIBILITE.disponible
   const indisponible = produit.disponibilite === 'rupture'
@@ -101,7 +101,7 @@ function Fiche({ produit }) {
 
           <div className="card mt-5 flex items-center justify-between gap-4 px-5 py-4">
             <div className="flex items-baseline gap-2">
-              <Prix prix={produit.prix} className="text-4xl" />
+              <Prix prix={produit.prix} offre={offre} className="text-4xl" />
               <span className="text-sm text-slate-500">TTC</span>
             </div>
             <span className="label rounded bg-brand-soft/60 px-2.5 py-1 text-[11px] text-brand-dark">
