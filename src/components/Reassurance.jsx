@@ -1,10 +1,10 @@
 import { Headset, PackageCheck, Truck, Wallet } from 'lucide-react'
-import { CONTACT, LIVRAISON_GRATUITE_DES } from '../config'
+import { CONTACT, FRAIS_LIVRAISON } from '../config'
 import { DEVISE } from '../utils/format'
 
 const GARANTIES = [
   { icone: Truck, titre: 'Expédition 24 à 48 h', texte: 'Préparée depuis notre stock' },
-  { icone: PackageCheck, titre: `Livraison offerte dès ${LIVRAISON_GRATUITE_DES} ${DEVISE}`, texte: 'Sur toute votre commande' },
+  { icone: PackageCheck, titre: `Livraison ${FRAIS_LIVRAISON} ${DEVISE}`, texte: 'Tarif unique par commande' },
   { icone: Wallet, titre: 'Aucun paiement en ligne', texte: 'Confirmation par téléphone' },
   { icone: Headset, titre: 'Conseil direct', texte: CONTACT.telephone },
 ]

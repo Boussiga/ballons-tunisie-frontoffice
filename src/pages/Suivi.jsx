@@ -162,6 +162,13 @@ function Resultat({ id }) {
             <p className="font-display text-lg text-ink">{formatPrix(prixRemise(l.prixInitiale, l.offre) * l.quantite)}</p>
           </li>
         ))}
+        {/* Orders placed before delivery fees existed have fraisLivraison = 0 */}
+        {c.fraisLivraison > 0 && (
+          <li className="flex justify-between p-4 text-sm text-slate-600">
+            <span>Livraison</span>
+            <span>{formatPrix(c.fraisLivraison)}</span>
+          </li>
+        )}
         <li className="flex items-baseline justify-between p-4">
           <span className="text-slate-600">Total</span>
           <span className="font-display text-4xl font-bold text-brand-dark">{formatPrix(c.total)}</span>

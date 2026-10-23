@@ -8,7 +8,7 @@ import BoutonAjouter from '../components/BoutonAjouter'
 import Etat from '../components/Etat'
 import Prix from '../components/Prix'
 import Visuel from '../components/Visuel'
-import { LIVRAISON_GRATUITE_DES } from '../config'
+import { FRAIS_LIVRAISON } from '../config'
 import { useOffres } from '../offres/useOffres'
 import { DEVISE, DISPONIBILITE, formatPrix } from '../utils/format'
 import { QTE_MAX, prixRemise } from '../utils/prix'
@@ -62,7 +62,6 @@ function Fiche({ produit }) {
   const indisponible = produit.disponibilite === 'rupture'
   const prixFinal = prixRemise(produit.prix, offre)
   const bornee = (n) => Math.min(QTE_MAX, Math.max(1, n))
-  const livraisonOfferte = prixFinal * quantite >= LIVRAISON_GRATUITE_DES
 
   return (
     <>
@@ -106,7 +105,7 @@ function Fiche({ produit }) {
               <span className="text-sm text-slate-500">TTC</span>
             </div>
             <span className="label rounded bg-brand-soft/60 px-2.5 py-1 text-[11px] text-brand-dark">
-              {livraisonOfferte ? 'Livraison gratuite' : `Gratuite dès ${LIVRAISON_GRATUITE_DES} ${DEVISE}`}
+              + {FRAIS_LIVRAISON} {DEVISE} de livraison
             </span>
           </div>
 

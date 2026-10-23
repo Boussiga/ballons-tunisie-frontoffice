@@ -10,7 +10,7 @@ import Pagination from '../components/Pagination'
 import ProduitCard from '../components/ProduitCard'
 import QuestionBloc from '../components/QuestionBloc'
 import Reassurance from '../components/Reassurance'
-import { CONTACT, LIVRAISON_GRATUITE_DES } from '../config'
+import { CONTACT, FRAIS_LIVRAISON } from '../config'
 import { DEVISE } from '../utils/format'
 
 const PAR_PAGE = 12
@@ -83,7 +83,7 @@ export default function Produits() {
     <>
       <BandeauPage fil="Nos ballons" titre="Nos ballons de sport" badge={data ? `${tous.length} modèle${tous.length > 1 ? 's' : ''} en stock` : null}>
         <p className="flex items-center gap-2 text-sm text-slate-600">
-          <Truck size={16} className="text-brand-dark" /> Expédition soignée sous 24 à 48 h • Livraison gratuite dès {LIVRAISON_GRATUITE_DES} {DEVISE}
+          <Truck size={16} className="text-brand-dark" /> Expédition soignée sous 24 à 48 h • Livraison {FRAIS_LIVRAISON} {DEVISE}
         </p>
       </BandeauPage>
 

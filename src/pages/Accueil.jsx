@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { getFacets, getProduits } from '../api/storeApi'
 import { useApi } from '../api/useApi'
-import { CONTACT, LIVRAISON_GRATUITE_DES } from '../config'
+import { CONTACT, FRAIS_LIVRAISON } from '../config'
 import { useOffres } from '../offres/useOffres'
 import { DEVISE, formatDate } from '../utils/format'
 import BanniereOffre from '../components/BanniereOffre'
@@ -47,7 +47,7 @@ const FAQ = [
   },
   {
     q: 'Quels sont les délais et frais de livraison ?',
-    r: `Les commandes sont préparées et expédiées depuis notre stock sous 24 à 48 heures. La livraison est gratuite dès ${LIVRAISON_GRATUITE_DES} ${DEVISE} d'achat.`,
+    r: `Les commandes sont préparées et expédiées depuis notre stock sous 24 à 48 heures. Les frais de livraison sont de ${FRAIS_LIVRAISON} ${DEVISE} par commande, quel que soit le montant.`,
   },
   {
     q: 'Quelle taille de ballon choisir ?',
@@ -98,7 +98,7 @@ export default function Accueil() {
             </p>
 
             <ul className="mt-6 grid max-w-lg gap-2.5 text-sm text-slate-100 sm:grid-cols-2">
-              {['Livraison gratuite dès ' + LIVRAISON_GRATUITE_DES + ' ' + DEVISE, 'Expédition sous 24 à 48 h', 'Particuliers, écoles & clubs', 'Conseil personnalisé gratuit'].map((t) => (
+              {['Livraison ' + FRAIS_LIVRAISON + ' ' + DEVISE + ' par commande', 'Expédition sous 24 à 48 h', 'Particuliers, écoles & clubs', 'Conseil personnalisé gratuit'].map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <CircleCheck size={16} className="shrink-0 text-brand" /> {t}
                 </li>

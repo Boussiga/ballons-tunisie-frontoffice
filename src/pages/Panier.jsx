@@ -9,7 +9,8 @@ import BandeauPage from '../components/BandeauPage'
 import Visuel from '../components/Visuel'
 import { formatPrix } from '../utils/format'
 import { memoriserCommande } from '../utils/commandesLocales'
-import { QTE_MAX, prixRemise, totalLignes } from '../utils/prix'
+import { FRAIS_LIVRAISON } from '../config'
+import { QTE_MAX, prixRemise, totalAvecLivraison, totalLignes } from '../utils/prix'
 
 const fieldClass = 'field mt-1'
 
@@ -26,7 +27,8 @@ export default function Panier() {
   const [envoi, setEnvoi] = useState(false)
 
   const sousTotal = totalLignes(lignes, null)
-  const total = totalLignes(lignes, offre)
+  const totalArticles = totalLignes(lignes, offre)
+  const total = totalAvecLivraison(totalArticles)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -128,20 +130,22 @@ export default function Panier() {
 
         <form onSubmit={handleSubmit} className="card space-y-4 p-6 lg:col-span-2 lg:self-start">
           <div className="space-y-1 border-b border-slate-100 pb-4 text-sm text-slate-600">
+            <p className="flex justify-between">
+              <span>Sous-total</span>
+              <span>{formatPrix(sousTotal)}</span>
+            </p>
             {offre && (
-              <>
-                <p className="flex justify-between">
-                  <span>Sous-total</span>
-                  <span>{formatPrix(sousTotal)}</span>
-                </p>
-                <p className="flex justify-between text-green-700">
-                  <span>
-                    {offre.titre} (−{offre.pourcentageReduction} %)
-                  </span>
-                  <span>−{formatPrix(sousTotal - total)}</span>
-                </p>
-              </>
+              <p className="flex justify-between text-green-700">
+                <span>
+                  {offre.titre} (−{offre.pourcentageReduction} %)
+                </span>
+                <span>−{formatPrix(sousTotal - totalArticles)}</span>
+              </p>
             )}
+            <p className="flex justify-between">
+              <span>Livraison</span>
+              <span>{formatPrix(FRAIS_LIVRAISON)}</span>
+            </p>
             <p className="flex items-baseline justify-between pt-1 text-base text-ink">
               <span>Total</span>
               <span className="font-display text-4xl font-bold text-brand-dark">{formatPrix(total)}</span>

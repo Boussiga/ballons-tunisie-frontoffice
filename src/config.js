@@ -7,5 +7,6 @@ export const CONTACT = {
   facebook: 'https://www.facebook.com/share/1JWvyX1556/',
 }
 
-// Free delivery threshold, in DEVISE (see utils/format.js)
-export const LIVRAISON_GRATUITE_DES = 100
+// Flat delivery fee per order, in DEVISE (see utils/format.js).
+// Must match FRAIS_LIVRAISON in the API (utils/commande.js), which adds it to the order total.
+export const FRAIS_LIVRAISON = 10
