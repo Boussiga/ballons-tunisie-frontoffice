@@ -12,7 +12,11 @@ export const formatPrix = (prix, toujoursDecimales = false) => {
 }
 
 // Images are served by the API under /uploads/...
-export const imageSrc = (url) => (url ? `${API_URL}${url}` : null)
+// Cloudinary images are absolute https URLs; old products may still have a local /uploads path
+export const imageSrc = (url) => {
+  if (!url) return null
+  return /^https?:\/\//i.test(url) ? url : `${API_URL}${url}`
+}
 
 export const formatDateHeure = (iso) =>
   new Date(iso).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })
