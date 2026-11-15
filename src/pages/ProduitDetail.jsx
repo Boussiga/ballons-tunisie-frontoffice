@@ -6,8 +6,8 @@ import { useApi } from '../api/useApi'
 import { useCart } from '../cart/useCart'
 import BoutonAjouter from '../components/BoutonAjouter'
 import Etat from '../components/Etat'
+import Galerie from '../components/Galerie'
 import Prix from '../components/Prix'
-import Visuel from '../components/Visuel'
 import { FRAIS_LIVRAISON } from '../config'
 import { useOffres } from '../offres/useOffres'
 import { DEVISE, DISPONIBILITE, formatPrix } from '../utils/format'
@@ -87,10 +87,9 @@ function Fiche({ produit }) {
       </div>
 
       <div className="mx-auto grid max-w-[1304px] gap-10 px-4 py-10 sm:px-11 lg:grid-cols-[1.35fr_1fr]">
-        <div className="relative overflow-hidden rounded-2xl bg-panel shadow-[0_2px_14px_rgba(20,30,40,0.06)]">
-          <Visuel url={produit.imageUrl} alt={produit.nom} fit="contain" className="aspect-square w-full lg:aspect-[1/0.95]" />
+        <Galerie images={produit.images} url={produit.imageUrl} alt={produit.nom}>
           {offre && <span className="label absolute left-4 top-4 rounded-full bg-brand px-3 py-1 text-xs text-white">−{offre.pourcentageReduction} % {offre.titre}</span>}
-        </div>
+        </Galerie>
 
         <div>
           <div className="flex flex-wrap gap-2">
